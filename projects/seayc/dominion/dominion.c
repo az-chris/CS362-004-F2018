@@ -678,21 +678,28 @@ void adventurerCard(struct gameState *state, int handPos, int currentPlayer)
 		if (state->deckCount[currentPlayer] < 1) {//if the deck is empty we need to shuffle discard and add to deck
 			shuffle(currentPlayer, state);
 		}
+        printf("drawing card\n");
 		drawCard(currentPlayer, state);
+        printf("card draw check\n");
 		cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer] - 1];//top card of hand is most recently drawn card.
 		if (cardDrawn == silver || cardDrawn == gold)
+        {
 			drawntreasure++;
+            printf("adding treasure\n");
+        }
 		else
 		{
 			temphand[z] = cardDrawn;
 			state->handCount[currentPlayer]--; //this should just remove the top card (the most recently drawn one).
 			z++;
+            printf("none treasure treasure\n");
 		}
 	}
 	while (z - 1 >= 0)
 	{
 		state->discard[currentPlayer][state->discardCount[currentPlayer]++] = temphand[z - 1]; // discard all cards in play that have been drawn
 		z = z - 1;
+        printf("discarding temp hand\n");
 	}
 }
 
