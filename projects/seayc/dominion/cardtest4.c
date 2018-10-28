@@ -11,21 +11,36 @@ int main()
     printf("----------------------------------------------------\n");
 
     struct gameState G;
+    G.numActions = 2;
+    G.deckCount[1] = 25;
+    G.handCount[1] = 25;
 
-    G.supplyCount[curse] = 500;
-
-    int testResult;
-
-    testResult = supplyCount( curse, &G);
-
-    if( testResult == 500 )
+    villageCard( &G , 24 , 1);
+    if( G.numActions == 3 )
     {
-        printf("Success: Correct supply returned\n");
+        printf("Success: number of actions correctly incremented\n");
     }
     else
     {
-        printf("Failed: Incorrect supply returned\n");
+        printf("Failed: number of actions incorrectly incremented\n");
     }
+    if( G.handCount[1] == 25)
+    {
+        printf("Success: 1 card drawn and 1 card discarded\n");
+    }
+    else
+    {
+        printf("Failed: incorrect number of cards drawn and/or discarded\n");
+    }
+    if( G.deckCount[1] == 24)
+    {
+        printf("Success: deck reduced by 1\n");
+    }
+    else
+    {
+        printf("Failed: deck not correctly reduced\n");
+    }
+
 
 
     printf("----------------------------------------------------\n");

@@ -12,19 +12,17 @@ int main()
 
     struct gameState G;
 
-    G.whoseTurn = 5;
+    G.outpostPlayed = 5;
 
-    int testResult;
+     outPostCard(&G , 2 , 1 );
 
-    testResult = whoseTurn(&G);
-
-    if(testResult == 5)
+    if(G.outpostPlayed == 6)
     {
-        printf("Success: Correct whose turn returned\n");
+        printf("Success: Correct outpost played turn returned\n");
     }
     else
     {
-        printf("Failed: Incorrect whose turn returned\n");
+        printf("Failed: Incorrect outpost played returned\n");
     }
 
 
