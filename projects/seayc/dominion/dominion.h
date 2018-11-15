@@ -17,13 +17,13 @@
 
 enum CARD
   {curse = 0,
-   estate,
-   duchy,
-   province,
+   estate, //1
+   duchy, //2
+   province, //3
 
-   copper,
-   silver,
-   gold,
+   copper, //4
+   silver, //5
+   gold, //6
 
    adventurer,
    /* If no/only 1 treasure found, stop when full deck seen */
@@ -85,7 +85,7 @@ int initializeGame(int numPlayers, int kingdomCards[10], int randomSeed,
 		   struct gameState *state);
 /* Responsible for initializing all supplies, and shuffling deck and
    drawing starting hands for all players.  Check that 10 cards selected
-   are in fact (different) kingdom cards, and that numPlayers is valid. 
+   are in fact (different) kingdom cards, and that numPlayers is valid.
 
 Cards not in game should initialize supply position to -1 */
 
@@ -128,4 +128,16 @@ int getWinners(int players[MAX_PLAYERS], struct gameState *state);
 /* Set array position of each player who won (remember ties!) to
    1, others to 0 */
 
+/**************************************************************************/
+/********************     ASSIGNMENT 2 FUNCTIONS   ************************/
+/**************************************************************************/
+
+/********************     MANDATORY FUNCTIONS      ************************/
+void smithyCard(struct gameState *state, int handPos, int currentPlayer);
+void adventurerCard(struct gameState *state, int handPos, int currentPlayer);
+
+/********************     SELECTED FUNCTIONS       ************************/
+void outPostCard(struct gameState *state, int handPos, int currentPlayer);
+void villageCard(struct gameState *state, int handPos, int currentPlayer);
+void councilRoomCard(struct gameState *state, int handPos, int currentPlayer);
 #endif
