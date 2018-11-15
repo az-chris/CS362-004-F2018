@@ -28,9 +28,12 @@ int main()
     {
         genRandDeck(&G);
         H = G;
-
-        outPostCard(&G, 1, 1);
-        checkDeck(&H, &G, 1);
+        int currentPlayer;
+        currentPlayer = RandomNumberInInterval(0, G.numPlayers);
+        int handPos;
+        handPos = RandomNumberInInterval(0, 27);
+        outPostCard(&G, handPos, currentPlayer);
+        checkDeck(&H, &G, currentPlayer);
         if(G.outpostPlayed == H.outpostPlayed+1)
         {
             printf("Success: Correct outpost played turn returned\n");
