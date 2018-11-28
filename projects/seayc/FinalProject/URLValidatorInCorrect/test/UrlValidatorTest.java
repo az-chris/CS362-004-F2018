@@ -39,7 +39,7 @@ public class UrlValidatorTest extends TestCase {
 
    public void testManualTest()
    {
-      tring[] schemes = {"http","https"};
+      String[] schemes = {"http","https"};
       UrlValidator urlValidator = new UrlValidator(schemes);
       if (urlValidator.isValid("http://www.google.com")) {
          System.out.println("url is valid");
@@ -115,7 +115,7 @@ public class UrlValidatorTest extends TestCase {
            new ResultPair(":32818", true),
            new ResultPair(":65635",false),
            new ResultPair(":65536",false)
-   }
+   };
 
    ResultPair[] testUrlDeliminator = {
            new ResultPair("://",true),
