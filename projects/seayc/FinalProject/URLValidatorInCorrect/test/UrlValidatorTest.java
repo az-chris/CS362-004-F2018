@@ -39,55 +39,197 @@ public class UrlValidatorTest extends TestCase {
 
    public void testManualTest()
    {
+      System.out.println("\n" + "\n" + "********************* Start Manual test *********************" + "\n");
       String[] schemes = {"http","https"};
       UrlValidator urlValidator = new UrlValidator(schemes);
+      System.out.println("Manual Test 1 - http://www.google.com, http/http scheme");
       if (urlValidator.isValid("http://www.google.com")) {
-         System.out.println("url is valid");
+         System.out.println("Manual Test 1 - Pass (Returned Valid)");
       } else {
-         System.out.println("url is invalid");
+         System.out.println("Manual Test 1 - Fail (Returned Invalid)");
       }
-
+      System.out.println("Manual Test 2 - http://www.google.com, default scheme");
       UrlValidator urlValidator2 = new UrlValidator();
       if (urlValidator2.isValid("http://www.google.com")) {
-         System.out.println("url is valid");
+         System.out.println("Manual Test 2 - Pass (Returned Valid)" );
       } else {
-         System.out.println("url is invalid");
+         System.out.println("Manual Test 2 - Fail (Returned Invalid)");
       }
-
+      System.out.println("Manual Test 3 - http://www.google.com, ALLOW_ALL scheme");
       UrlValidator urlValidator3 = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
       if (urlValidator3.isValid("http://www.google.com")) {
-         System.out.println("url is valid");
+         System.out.println("Manual Test 3 - Pass (Returned Valid)");
       } else {
-         System.out.println("url is invalid");
+         System.out.println("Manual Test 3 - Fail (Returned Invalid)");
       }
+      System.out.println("Manual Test 4 - http://kljadklualdfsdlfiadsf, ALLOW_ALL scheme");
       if (urlValidator3.isValid("http://kljadklualdfsdlfiadsf")) {
-         System.out.println("url is valid");
+         System.out.println("Manual Test 4 - Fail (Returned Valid)");
       } else {
-         System.out.println("url is invalid");
+         System.out.println("Manual Test 4 - Pass (Returned Invalid)");
       }
       UrlValidator urlValidator4 = new UrlValidator();
-      if (urlValidator4.isValid("https://www.amazon.com/")) {
-         System.out.println("url is valid");
+      System.out.println("Manual Test 5 - https://www.google.com/, default scheme");
+      if (urlValidator4.isValid("https://www.google.com/")) {
+         System.out.println("Manual Test 5 - Pass (Returned Valid)");
       } else {
-         System.out.println("url is invalid");
+         System.out.println("Manual Test 5 - Pass (Returned Invalid)");
       }
       UrlValidator urlValidator5 = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
+      System.out.println("Manual Test 6 - http://kljadklualdfsdlfiadsf, ALLOW_ALL scheme");
       if (urlValidator5.isValid("http://kljadklualdfsdlfiadsf")) {
-         System.out.println("url is valid");
+         System.out.println("Manual Test 6 - Fail (Returned Valid)");
       } else {
-         System.out.println("url is invalid");
+         System.out.println("Manual Test 6 - Pass (Returned Invalid)");
       }
+
+      System.out.println("\n" + "********************* End Manual test *********************");
    }
 
 
-   public void testYourFirstPartition()
+   public void testschemePartition()
    {
+      System.out.println("\n" + "\n" + "********************* Start Scheme Partition test *********************");
+      UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
+      String[] validDomains= {"http://www.google.com","https://www.google.com", "ftp://www.google.com" ,
+              "maps://www.google.com"};
+      String[] invalidDomains= {"hptt://www.google.com","xttps://www.google.com", "ztr://www.google.com" ,
+              "kansas://www.google.com"};
 
+      System.out.println("\n"  + "               **** Good Scheme test ****");
+      for (String v: validDomains) {
+         try {
+            if (urlVal.isValid(v) == true) {
+               System.out.println("Scheme Test for " + v + " passed (Returned Valid)");
+            } else {
+               System.out.println("Scheme Test for " + v + " failed (Returned Invalid)");
+            }
+         } catch (Error e) {
+            System.out.println("Scheme Test for " + v + " THREW AN EXCEPTION ERROR!!!");
+         }
+      }
+      System.out.println("\n"  + "               **** Bad Scheme test ****");
+      for (String i: invalidDomains) {
+         try {
+            if (urlVal.isValid(i) == false) {
+               System.out.println("Scheme Test for " + i + " passed (Returned Invalid)");
+            } else {
+               System.out.println("Scheme Test for " + i + " failed (Returned Valid)");
+            }
+         } catch (Error e) {
+            System.out.println("Scheme Test for " + i + " THREW AN EXCEPTION ERROR!!!");
+         }
+      }
+
+      System.out.println("\n" + "********************* End Scheme Partition test *********************");
 
    }
 
-   public void testYourSecondPartition(){
+   public void testdeliminatorsPartition()
+   {
+      System.out.println("\n" + "\n" + "********************* Start Deliminator Partition test *********************");
+      UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
+      String[] validDeliminators= {"http://www.google.com","www.google.com"};
+      String[] invalidDeliminators= {"http:/www.google.com" , "http//www.google.com" , "http/:/www.google.com"
+              ,"http:?/www.google.com", "http|//www.google.com"};
+      System.out.println("\n"  +   "               **** Good Deliminator test ****");
+      for (String v: validDeliminators) {
+         try {
+            if (urlVal.isValid(v) == true) {
+               System.out.println("Deliminator Test for " + v + " passed (Returned Valid)");
+            } else {
+               System.out.println("Deliminator Test for " + v + " failed (Returned Invalid)");
+            }
+         } catch (Error e) {
+            System.out.println("Deliminator Test for " + v + " THREW AN EXCEPTION ERROR!!!");
+         }
+      }
+      System.out.println("\n"  + "               **** Bad Deliminator test ****");
+      for (String i: invalidDeliminators) {
+         try {
+            if (urlVal.isValid(i) == false) {
+               System.out.println("Deliminator Test for " + i + " passed (Returned Invalid)");
+            } else {
+               System.out.println("Deliminator Test for " + i + " failed (Returned Valid)");
+            }
+         } catch (Error e) {
+            System.out.println("Deliminator Test for " + i + " THREW AN EXCEPTION ERROR!!!");
+         }
+      }
 
+      System.out.println("\n" + "********************* End Deliminator Partition test *********************");
+
+   }
+
+   public void testportsPartition()
+   {
+      System.out.println("\n" + "\n" + "********************* Start Port Partition test *********************");
+      UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
+      String[] validPorts= {"http://www.google.com:0","http://www.google.com:128", "http://www.google.com:255"};
+      String[] invalidPorts= {"http://www.google.com:-1" , "http://www.google.com:" , "http://www.google.com:ok"
+              ,"http://www.google.com:256", "http://www.google.com://"};
+      System.out.println("\n"  + "               **** Good Port Partition test ****");
+      for (String v: validPorts) {
+         try {
+            if (urlVal.isValid(v) == true) {
+               System.out.println("Port Test for " + v + " passed (Returned Valid)");
+            } else {
+               System.out.println("Port Test for " + v + " failed (Returned Invalid)");
+            }
+         } catch (Error e) {
+            System.out.println("Port Test for " + v + " THREW AN EXCEPTION ERROR!!!");
+         }
+      }
+      System.out.println("\n"  + "               **** Bad Port Partition test ****");
+      for (String i: invalidPorts) {
+         try {
+            if (urlVal.isValid(i) == false) {
+               System.out.println("Port Test for " + i + " passed (Returned Invalid)");
+            } else {
+               System.out.println("Port Test for " + i + " failed (Returned Valid)");
+            }
+         } catch (Error e) {
+            System.out.println("Port Test for " + i + " THREW AN EXCEPTION ERROR!!!");
+         }
+      }
+
+      System.out.println("\n" + "********************* End Port Partition test *********************");
+
+   }
+
+   public void testpathsPartition()
+   {
+      System.out.println("\n" + "\n" + "********************* Start Path Partition test *********************");
+      UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
+      String[] validPaths= {"http://www.google.com:0","http://www.google.com:128", "http://www.google.com:255"};
+      String[] invalidPaths= {"http://www.google.com:-1" , "http://www.google.com:" , "http://www.google.com:ok"
+              ,"http://www.google.com:256", "http://www.google.com://"};
+      System.out.println("\n"  + "               **** Good Path Partition test ****");
+      for (String v: validPaths) {
+         try {
+            if (urlVal.isValid(v) == true) {
+               System.out.println("Path Test for " + v + " passed (Returned Valid)");
+            } else {
+               System.out.println("Path Test for " + v + " failed (Returned Invalid)");
+            }
+         } catch (Error e) {
+            System.out.println("Path Test for " + v + " THREW AN EXCEPTION ERROR!!!");
+         }
+      }
+      System.out.println("\n"  + "               **** Bad Path Partition test ****");
+      for (String i: invalidPaths) {
+         try {
+            if (urlVal.isValid(i) == false) {
+               System.out.println("Path Test for " + i + " passed (Returned Invalid)");
+            } else {
+               System.out.println("Path Test for " + i + " failed (Returned Valid)");
+            }
+         } catch (Error e) {
+            System.out.println("Path Test for " + i + " THREW AN EXCEPTION ERROR!!!");
+         }
+      }
+
+      System.out.println("\n" + "********************* End Path Partition test *********************");
 
    }
 
