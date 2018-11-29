@@ -201,9 +201,10 @@ public class UrlValidatorTest extends TestCase {
    {
       System.out.println("\n" + "\n" + "********************* Start Path Partition test *********************");
       UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
-      String[] validPaths= {"http://www.google.com:0","http://www.google.com:128", "http://www.google.com:255"};
-      String[] invalidPaths= {"http://www.google.com:-1" , "http://www.google.com:" , "http://www.google.com:ok"
-              ,"http://www.google.com:256", "http://www.google.com://"};
+      String[] validPaths= {"http://www.google.com/","http://www.google.com//", "http://www.google.com/abcd",
+              "http://www.google.com/abcd.efgh", "http://www.google.com/abcd/efgh"};
+      String[] invalidPaths= {"http://www.google.com///" , "http://www.google.com\\" , "http://www.google.com\\\\"
+              ,"http://www.google.com:-4"};
       System.out.println("\n"  + "               **** Good Path Partition test ****");
       for (String v: validPaths) {
          try {
