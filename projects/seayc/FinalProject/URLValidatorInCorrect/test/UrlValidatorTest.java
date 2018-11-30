@@ -17,8 +17,10 @@
  */
 
 
-import junit.framework.TestCase;
+import java.util.List;
 import java.util.Random;
+
+import junit.framework.TestCase;
 
 
 
@@ -236,18 +238,70 @@ public class UrlValidatorTest extends TestCase {
 
 
    public void testIsValid() {
-      UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
+	   System.out.println("\n" + "\n" + "********************* Start Programmatic test *********************\n");
+	   String[] schemes = new String[testUrlScheme.length];
+	   int passed = 0, failed = 0, shouldPass = 0, shouldFail = 0;
+	   for(int i = 0; i < schemes.length; i++) {schemes[i] = ((ResultPair[]) testUrlScheme)[i].item;}
+	   
+	   UrlValidator urlVal = new UrlValidator(schemes, 0L);
+	   Random rand = new Random();
 
-      Random rand = new Random();
-
-
-   };
+	   for (int i = 0; i < 500; i++) {
+		   String urlScheme, urlDelimeter, urlIp, urlExt, urlPort;
+		   boolean validScheme, validDelimeter, validIp, validExt, validPort;
+		   
+		   ResultPair rpScheme = ((ResultPair[]) UrlPartsForTest[0])[rand.nextInt(testUrlScheme.length)];
+		   ResultPair rpDelimeter = ((ResultPair[]) UrlPartsForTest[1])[rand.nextInt(testUrlDeliminator.length)];
+		   ResultPair rpIp = ((ResultPair[]) UrlPartsForTest[2])[rand.nextInt(testIPNumbers.length)];
+		   ResultPair rpExt = ((ResultPair[]) UrlPartsForTest[3])[rand.nextInt(testUrlExt.length)];
+		   ResultPair rpPort = ((ResultPair[]) UrlPartsForTest[4])[rand.nextInt(testPorts.length)];
+		   
+		   urlScheme = rpScheme.item;
+		   validScheme = rpScheme.valid;
+		   urlDelimeter = rpDelimeter.item;
+		   validDelimeter = rpDelimeter.valid;
+		   urlIp = rpIp.item;
+		   validIp = rpIp.valid;
+		   urlExt = rpExt.item;
+		   validExt = rpExt.valid;
+		   urlPort = rpPort.item;
+		   validPort = rpPort.valid;
+		   
+		   String url = String.format("%s%s%s.%s%s", urlScheme, urlDelimeter, urlIp, urlExt, urlPort);
+		   
+		   if(validScheme || validDelimeter || validIp || validExt || validPort) {
+			   url+= " **SHOULD FAIL**";
+			   shouldFail++;
+		   } else {
+			   url+= " **SHOULD PASS**";
+			   shouldPass++;
+		   }
+		   
+		  //String url = urlBuilder(75, 0, 1, 1, 2); <-- bug example: should pass but returns failed
+    	  try {
+    		  if (urlVal.isValid(url) == false) {
+    			  System.out.println(String.format("Test URL %d: %s failed (Returned Invalid)", i, url));
+    			  failed++;
+    		  } else {
+    			  System.out.println(String.format("Test URL %d: %s passed (Returned Valid)", i, url));
+    			  passed++;
+    		  }
+    	  } catch (Error e) {
+    		  System.out.println(String.format("Test URL %d: THREW AN EXCEPTION ERROR", i));
+    	  }
+	   }
+	   
+	   System.out.println(String.format("\nTESTS PASSED: %d, TESTS FAILED: %d", passed, failed));
+	   System.out.println(String.format("\nSHOULD PASS: %d, SHOULD FAIL: %d", shouldPass, shouldFail));
+	   System.out.println("\n" + "********************* End Programmatic test *********************");
+   }
+   
 
    ResultPair[] testIPNumbers = {
-           new ResultPair("0",true),
-           new ResultPair("128",true),
-           new ResultPair("255",true),
-           new ResultPair("-128",false),
+           new ResultPair("www.google",true),
+           new ResultPair("go",true),
+           new ResultPair("1.2.3.4",true),
+           new ResultPair("aaa.",false),
            new ResultPair("256",false),
    };
 
@@ -264,13 +318,13 @@ public class UrlValidatorTest extends TestCase {
            new ResultPair("://",true),
            new ResultPair(":/",false),
            new ResultPair("|:|",false),
-           new ResultPair("//:",false),
-           new ResultPair("/:/",false),
-           new ResultPair("//",false),
-           new ResultPair("/|:",false),
-           new ResultPair("//?",false),
-           new ResultPair("?|:",false),
-           new ResultPair(":",false),
+//           new ResultPair("//:",false),
+//           new ResultPair("/:/",false),
+//           new ResultPair("//",false),
+//           new ResultPair("/|:",false),
+//           new ResultPair("//?",false),
+//           new ResultPair("?|:",false),
+//           new ResultPair(":",false),
    };
 
    ResultPair[] testUrlScheme = {
@@ -571,7 +625,7 @@ public class UrlValidatorTest extends TestCase {
 
 // All Valid ICANN domain extensions http://data.iana.org/TLD/tlds-alpha-by-domain.tx
    ResultPair[] testUrlExt  = {
-        new ResultPair("aaa",           true),
+        new ResultPair("aaa", true),
         new ResultPair("aarp",true),
         new ResultPair("abarth",true),
         new ResultPair("abb",true),
@@ -2107,5 +2161,8 @@ public class UrlValidatorTest extends TestCase {
         new ResultPair("zuerich",true),
         new ResultPair("zw",true),
    };
+   
+   Object[] UrlPartsForTest = {testUrlScheme, testUrlDeliminator, testIPNumbers, testUrlExt, testPorts};
+   int[] UrlPartsIndex = {0, 0, 0, 0, 0};
 }
 
