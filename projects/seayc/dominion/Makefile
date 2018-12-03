@@ -82,6 +82,12 @@ cardtestresults:  cardTest1 cardTest2 cardTest3
 	gcov dominion.c >> cardtestresults.out
 	cat dominion.c.gcov >> cardtestresults.out
 
+smallcardtestresults:  cardTest1 cardTest2
+	./cardTest1 &> seaycardtestresults.out
+	./cardTest2 >> seaycardtestresults.out
+	gcov dominion.c >> seaycardtestresults.out
+	cat dominion.c.gcov >> seaycardtestresults.out
+
 randomtestresults: randomTest1 randomTest2 randomtestadventurer
 	./randomTest1 &> randomtestresults.out
 	./randomTest2 >> randomtestresults.out
@@ -89,10 +95,17 @@ randomtestresults: randomTest1 randomTest2 randomtestadventurer
 	gcov dominion.c >> randomtestresults.out
 	cat dominion.c.gcov >> randomtestresults.out
 
+smallrandomtestresults: randomTest1 randomtestadventurer
+	./randomTest1 &> seayrandomtestresults.out
+	./randomtestadventurer >> seayrandomtestresults.out
+	gcov dominion.c >> seayrandomtestresults.out
+	cat dominion.c.gcov >> seayrandomtestresults.out
+
 player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)
 
-all: playdom player unittestresults cardtestresults randomtestresults
+all: playdom player unittestresults cardtestresults \
+     randomtestresults smallcardtestresults smallrandomtestresults
 
 clean:
 	rm -f *.o playdom.exe playdom unit player player.exe    \
